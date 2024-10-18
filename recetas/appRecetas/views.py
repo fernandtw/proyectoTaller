@@ -1,37 +1,29 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
+from django.contrib.auth import views as auth_views
+from django.urls import reverse_lazy
 
+class CustomLoginView(auth_views.LoginView):
+    template_name = 'registration/login.html'
 
-
-
-
-
-def custom_login(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            next_url = request.GET.get('next')
-        if next_url:
-            return redirect(next_url)
+    def get_success_url(self):
+        user = self.request.user
+        if user.is_staff:
+            return reverse_lazy('admin_dashboard')
         else:
-            if user.is_staff:
-                messages.success(request, 'Bienvenido al panel de administración.')
-                return redirect('admin_dashboard')
-            else:
-                messages.success(request, 'Inicio de sesión exitoso.')
-                return redirect('home')
+            return reverse_lazy('home')
+
+def custom_redirect(request):
+    user = request.user
+    if user.is_staff:
+        return redirect(reverse('admin_dashboard'))
     else:
-        form = AuthenticationForm()
-    return render(request, 'registration/login.html', {'form': form})
-
-
+        return redirect(reverse('home'))
 
 @login_required
 def admin_dashboard(request):
