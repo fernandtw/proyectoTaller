@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'appRecetas',
-    'appPanelAdministracion',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -55,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'appRecetas.middleware.AdminRedirectMiddleware',
 ]
 
 ROOT_URLCONF = 'recetas.urls'
@@ -150,3 +150,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #Variable de redireccion de login y logout
 # LOGIN_REDIRECT_URL='home'
 # LOGOUT_REDIRECT_URL='home'
+

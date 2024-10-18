@@ -3,18 +3,42 @@ from django.http import HttpResponse
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib import messages
 
-# Vista de inicio
-def inicio(request):
-    return render(request, 'inicio.html')
 
-# Vista de administración
-@login_required
-def admin(request):
-    if request.user.is_staff:
-        return redirect('admin')  # Redirigir al panel de administración
+
+
+
+
+def custom_login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            next_url = request.GET.get('next')
+        if next_url:
+            return redirect(next_url)
+        else:
+            if user.is_staff:
+                messages.success(request, 'Bienvenido al panel de administración.')
+                return redirect('admin_dashboard')
+            else:
+                messages.success(request, 'Inicio de sesión exitoso.')
+                return redirect('home')
     else:
-        return redirect('home') 
+        form = AuthenticationForm()
+    return render(request, 'registration/login.html', {'form': form})
+
+
+
+@login_required
+def admin_dashboard(request):
+    if request.user.is_staff:
+        return render(request, 'Panel/admin_dashboard.html')
+    else:
+        return redirect('home')
 
 # Vista de índice
 def index(request):
@@ -42,23 +66,21 @@ def exit(request):
     logout(request)
     return redirect('home')
 
-# Vista de registro
 def register(request):
-    data = {
-        'form': CustomUserCreationForm()
-    }
-
     if request.method == 'POST':
-        user_creation_form = CustomUserCreationForm(data=request.POST)
+        form = CustomUserCreationForm(request.POST)
+        
+        if form.is_valid():
+            user = form.save()  # Guardar el usuario
+            login(request, user)  # Iniciar sesión automáticamente
+            messages.success(request, 'Registro exitoso. ¡Bienvenido!')
+            return redirect('home')  # Redirigir a la página de inicio o donde desees
+        else:
+            messages.error(request, 'Por favor corrige los errores en el formulario.')
+    else:
+        form = CustomUserCreationForm()
 
-        if user_creation_form.is_valid():
-            user_creation_form.save()
-            user = authenticate(username=user_creation_form.cleaned_data['username'], password=user_creation_form.cleaned_data['password1'])
-            if user:
-                login(request, user)
-                return redirect('profile')  # Redirigir al perfil después del registro
-
-    return render(request, 'registration/register.html', data)
+    return render(request, 'registration/register.html', {'form': form})
 
 # Vista del perfil
 # @login_required
