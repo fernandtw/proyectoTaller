@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.http import HttpResponse
 from .models import Post 
 from django.contrib.auth import logout, authenticate, login
@@ -81,3 +81,31 @@ def listar_recetas(request):
         'recetas': recetas  # Cambia 'Post' por 'recetas' para que sea más descriptivo
     }
     return render(request, 'Admin/listar.html', data)
+
+
+
+def modificar_receta(request, id):
+
+    receta = get_object_or_404(Post, id=id)
+
+    data  = {
+        'form': PostForm(instance=receta)
+    }
+
+    if request.method == 'POST':
+        formulario = PostForm(data=request.POST, instance=receta, files=request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect(to="listar_recetas")
+        data["form"] = formulario
+
+        
+    
+    return render(request, 'Admin/modificar.html', data)
+    
+
+
+def eliminar_receta(request, id):
+    receta = get_object_or_404(Post, id=id)
+    receta.delete()
+    return redirect(to="listar_recetas")

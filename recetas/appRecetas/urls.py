@@ -11,6 +11,9 @@ urlpatterns = [
     path('agregar-recetas/',views.agregar_receta, name='agregar_recetas'),
     path('listar-recetas/',views.listar_recetas, name='listar_recetas'),
     path('accounts/',include('django.contrib.auth.urls')),
+    path('modificar-receta/<id>/',views.modificar_receta, name='modificar_receta'),
+    path('eliminar-receta/<id>/', views.eliminar_receta, name='eliminar_receta'),
+
 
 
 ]
