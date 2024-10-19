@@ -1,36 +1,11 @@
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
+from .models import Post 
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, PostForm
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib import messages
-from django.contrib.auth import views as auth_views
-from django.urls import reverse_lazy
 
-class CustomLoginView(auth_views.LoginView):
-    template_name = 'registration/login.html'
-
-    def get_success_url(self):
-        user = self.request.user
-        if user.is_staff:
-            return reverse_lazy('admin_dashboard')
-        else:
-            return reverse_lazy('home')
-
-def custom_redirect(request):
-    user = request.user
-    if user.is_staff:
-        return redirect(reverse('admin_dashboard'))
-    else:
-        return redirect(reverse('home'))
-
-@login_required
-def admin_dashboard(request):
-    if request.user.is_staff:
-        return render(request, 'Panel/admin_dashboard.html')
-    else:
-        return redirect('home')
 
 # Vista de índice
 def index(request):
@@ -65,7 +40,6 @@ def register(request):
         if form.is_valid():
             user = form.save()  # Guardar el usuario
             login(request, user)  # Iniciar sesión automáticamente
-            messages.success(request, 'Registro exitoso. ¡Bienvenido!')
             return redirect('home')  # Redirigir a la página de inicio o donde desees
         else:
             messages.error(request, 'Por favor corrige los errores en el formulario.')
@@ -74,8 +48,36 @@ def register(request):
 
     return render(request, 'registration/register.html', {'form': form})
 
-# Vista del perfil
-# @login_required
-# def profile_view(request):
-#     return render(request, 'registration/profile.html')  # Asegúrate de tener este template
+from django.shortcuts import render, redirect
+from .forms import PostForm
 
+def agregar_receta(request):
+    
+    data = {
+        'form': PostForm()
+    }
+    
+    if request.method == 'POST':
+        formulario = PostForm(data=request.POST, files=request.FILES)  # Crea una instancia del formulario
+        if formulario.is_valid():
+            formulario.save() 
+        else:
+            # Si el formulario no es válido, lo volvemos a enviar con los errores
+            data = {
+                'form': formulario,
+                'mensaje': "Hubo un error al guardar la receta."
+            }
+    else:
+        formulario = PostForm()
+        data = {
+            'form': formulario
+        }
+
+    return render(request, 'Admin/agregar.html', data)
+
+def listar_recetas(request):
+    recetas = Post.objects.all()  # Asegúrate de usar la clase Post correctamente
+    data = {
+        'recetas': recetas  # Cambia 'Post' por 'recetas' para que sea más descriptivo
+    }
+    return render(request, 'Admin/listar.html', data)

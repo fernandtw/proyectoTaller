@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'meta.html' %}
+
+<div class="d-flex justify-content-center align-items-start" style="min-height: 80vh;">
+    <div class="card-body">
+        <h2 class="text-center">Listado de Recetas</h2>
+        <table class=" table table-striped table-hover table-responsive-sm">
+            <tr>
+                <th>Título</th>
+                <th>Ingredientes</th>
+                <th>Instrucciones</th>
+                <th>Categoría</th>
+            </tr>
+            {% for p in recetas %}
+            <tr>
+                <td>{{ p.title | title }}</td>
+                <td>{{ p.ingredients | title }}</td>
+                <td>{{ p.instructions | truncatewords:20 }}</td> <!-- Muestra solo las primeras 20 palabras -->
+                <td>{{ p.category.name }}</td> <!-- Asumiendo que category es un ForeignKey y tiene un campo 'name' -->
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}
+

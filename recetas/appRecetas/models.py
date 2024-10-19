@@ -43,7 +43,6 @@ class Post(models.Model):
     published = models.BooleanField(default = False, verbose_name = 'Publicado')  
 
     category = models.ForeignKey(Category, on_delete = models.CASCADE, verbose_name = 'Categoria')
-    author = models.ForeignKey(User, on_delete = models.CASCADE, verbose_name = 'Autor')
 
     created = models.DateTimeField(default=timezone.now, verbose_name='Fecha de creación')
     update =  models.DateTimeField(auto_now = True, verbose_name = 'Fecha de modificación')
