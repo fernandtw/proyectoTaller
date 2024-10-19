@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.http import HttpResponse
 from .models import Post 
+from django.contrib import messages
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm, PostForm
@@ -48,8 +49,6 @@ def register(request):
 
     return render(request, 'registration/register.html', {'form': form})
 
-from django.shortcuts import render, redirect
-from .forms import PostForm
 
 def agregar_receta(request):
     
@@ -103,8 +102,6 @@ def modificar_receta(request, id):
     
     return render(request, 'Admin/modificar.html', data)
     
-
-
 def eliminar_receta(request, id):
     receta = get_object_or_404(Post, id=id)
     receta.delete()
