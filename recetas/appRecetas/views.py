@@ -3,10 +3,13 @@ from django.http import HttpResponse
 from .models import Post 
 from django.contrib import messages
 from django.contrib.auth import logout, authenticate, login
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import CustomUserCreationForm, PostForm
 from django.contrib.auth.forms import AuthenticationForm
 
+
+def is_admin(user):
+    return user.is_staff
 
 # Vista de índice
 def index(request):
@@ -49,7 +52,7 @@ def register(request):
 
     return render(request, 'registration/register.html', {'form': form})
 
-
+@user_passes_test(is_admin)
 def agregar_receta(request):
     
     data = {
@@ -74,6 +77,7 @@ def agregar_receta(request):
 
     return render(request, 'Admin/agregar.html', data)
 
+@user_passes_test(is_admin)
 def listar_recetas(request):
     recetas = Post.objects.all()  # Asegúrate de usar la clase Post correctamente
     data = {
@@ -82,7 +86,7 @@ def listar_recetas(request):
     return render(request, 'Admin/listar.html', data)
 
 
-
+@user_passes_test(is_admin)
 def modificar_receta(request, id):
 
     receta = get_object_or_404(Post, id=id)
@@ -101,7 +105,8 @@ def modificar_receta(request, id):
         
     
     return render(request, 'Admin/modificar.html', data)
-    
+
+@user_passes_test(is_admin)
 def eliminar_receta(request, id):
     receta = get_object_or_404(Post, id=id)
     receta.delete()
