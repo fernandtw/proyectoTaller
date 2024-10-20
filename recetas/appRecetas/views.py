@@ -17,20 +17,24 @@ def index(request):
 
 # Vista de inicio (home)
 def home(request):
-    return render(request, 'home.html')
+    recetas = Post.objects.all() #Transforma datos a una lista
+    data = {
+        'recetas': recetas
+    }
+    return render(request, 'home.html', data)
 
 # Vista de categoría
 def category(request):
     return render(request, 'home.html')
 
-# Vista de publicaciones
-def post(request):
-    return render(request, 'post.html')
-
 # Vista de recetas
 @login_required
 def recetas(request):
-    return render(request, 'lista_recetas.html')
+    recetas = Post.objects.all() #Transforma datos a una lista
+    data = {
+        'recetas': recetas
+    }
+    return render(request, 'lista_recetas.html', data)
 
 # Vista de cierre de sesión
 def exit(request):
@@ -111,3 +115,17 @@ def eliminar_receta(request, id):
     receta = get_object_or_404(Post, id=id)
     receta.delete()
     return redirect(to="listar_recetas")
+
+# Detalle receta
+
+def receta_detalle(request, receta_id):
+    receta = get_object_or_404(Post, id=receta_id)
+    ingredientes = receta.ingredients.split(",")  # Convertir los ingredientes en una lista
+    instrucciones = receta.instructions.split(",")  # Convertir las instrucciones en una lista
+
+    context = {
+        'receta': receta,
+        'ingredientes': ingredientes,
+        'instrucciones': instrucciones,
+    }
+    return render(request, 'recetas/receta_detalle.html', context)
