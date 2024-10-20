@@ -13,11 +13,11 @@
                 {% endif %}
 
                 <h2>Ingredientes</h2>
-                <ul class="list-group mb-4">
+                <ol class="mb-4">
                     {% for ingrediente in ingredientes %}
-                        <li class="list-group-item">{{ ingrediente.strip }}</li>
+                        <li>{{ ingrediente.strip }}</li>
                     {% endfor %}
-                </ul>
+                </ol>
 
                 <h2>Instrucciones</h2>
                 <ol class="mb-4">

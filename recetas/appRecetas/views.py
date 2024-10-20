@@ -120,8 +120,8 @@ def eliminar_receta(request, id):
 
 def receta_detalle(request, receta_id):
     receta = get_object_or_404(Post, id=receta_id)
-    ingredientes = receta.ingredients.split(",")  # Convertir los ingredientes en una lista
-    instrucciones = receta.instructions.split(",")  # Convertir las instrucciones en una lista
+    ingredientes = receta.ingredients.split("\n")  # Convertir los ingredientes en una lista
+    instrucciones = receta.instructions.split("\n")  # Convertir las instrucciones en una lista
 
     context = {
         'receta': receta,

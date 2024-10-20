@@ -19,8 +19,8 @@
             {% for p in recetas %}
             <tr>
                 <td>{{ p.title | title }}</td>
-                <td>{{ p.ingredients | title }}</td>
-                <td>{{ p.instructions | truncatewords:20 }}</td> <!-- Muestra solo las primeras 20 palabras -->
+                <td>{{ p.ingredients | truncatewords:5 }}</td>
+                <td>{{ p.instructions | truncatewords:5 }}</td> <!-- Muestra solo las primeras 20 palabras -->
                 <td>{{ p.category.name }}</td> <!-- Asumiendo que category es un ForeignKey y tiene un campo 'name' -->
                 <td>
                     <a href="{% url 'modificar_receta' p.id %}" class="btn btn-info btn-sm">Modificar</a>
