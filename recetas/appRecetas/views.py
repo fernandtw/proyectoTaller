@@ -129,3 +129,14 @@ def receta_detalle(request, receta_id):
         'instrucciones': instrucciones,
     }
     return render(request, 'recetas/receta_detalle.html', context)
+
+def busqueda_funcional(request):
+    if request.method == "POST":
+        searched = request.POST.get('busquedaFuncional')
+        resultados = Post.objects.filter(title__contains=searched)
+        return render(request,
+                        'busqueda.html', 
+                      {'searched': searched,
+                       'resultados': resultados,})
+    else:
+        return render(request, 'busqueda.html', {})

@@ -60,6 +60,7 @@ class Post(models.Model):
 
 
 
+
 #Autor = usuarios registrados en la app
 # class Usuario(models.Model):
 #     usuario = models.

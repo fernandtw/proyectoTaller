@@ -96,16 +96,16 @@ DATABASES = {
 
 # Base de datos mysql conexion
 # Realizar instalacion pip mysql
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'app_recetas',
-#         'USER': 'root',
-#         'PASSWORD': '',
-#         'HOST': 'localhost',
-#         'PORT': '3306',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'apprecetas',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

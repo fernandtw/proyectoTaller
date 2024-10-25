@@ -120,6 +120,45 @@ img {
     }
 }
 
+#search-results {
+    display: none;
+}
 
 
+.card-container{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 100px;
+}
 
+.card{
+    width: 325px;
+    background-color: aliceblue;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+    margin: 20px; 
+}
+
+.carta_imagen{
+        width: 50%;
+        height: 50%;
+        object-fit: cover;
+}
+
+.card-container{
+    padding: 16px;
+}
+
+.card-container h3{
+    font-size: 28px;
+    margin-bottom: 8px;
+
+}
+
+.card-container a{
+    color: #666;
+    font-size: 16px;
+    line-height: 1.3;
+}
