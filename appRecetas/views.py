@@ -143,14 +143,19 @@ def perfil(request):
 @login_required
 def editar_perfil(request):
     perfil = get_object_or_404(Perfil, usuario=request.user)
+    
     if request.method == 'POST':
         form = EditarPerfilForm(request.POST, request.FILES, instance=perfil)
         if form.is_valid():
-            form.save()
+            # Actualizar nombre de usuario y correo electrónico en el modelo User
+            request.user.username = form.cleaned_data['username']
             request.user.email = form.cleaned_data['email']
             request.user.save()
+            
+            # Guardar cambios en el perfil
+            form.save()
             return redirect('perfil')
     else:
-         form = EditarPerfilForm(instance=perfil)
+        form = EditarPerfilForm(instance=perfil)
+    
     return render(request, 'usuario/editar_perfil.html', {'form': form})
-
