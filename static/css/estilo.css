@@ -18,7 +18,7 @@ main {
     height: 100%;
     object-fit: cover; /* Las imágenes cubrirán el área sin distorsionarse */
 }
-  
+
 /* Estilos adicionales para el footer */
 .footer {
     background-color: #333;
