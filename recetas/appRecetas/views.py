@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.http import HttpResponse
-from .models import Post 
+from .models import Post
 from django.contrib import messages
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -129,3 +129,7 @@ def receta_detalle(request, receta_id):
         'instrucciones': instrucciones,
     }
     return render(request, 'recetas/receta_detalle.html', context)
+
+
+    
+

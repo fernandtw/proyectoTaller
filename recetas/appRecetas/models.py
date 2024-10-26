@@ -24,16 +24,6 @@ class Category(models.Model):
 
 
 
-# Autor
-
-
-# Modelo
-
-
-
-# Recetas post
-
-
 class Post(models.Model):
     title = models.CharField(max_length = 250, verbose_name = 'Titulo')
     ingredients = models.TextField(default='', verbose_name='Ingredientes')
@@ -55,14 +45,12 @@ class Post(models.Model):
         
     def __str__(self):
         return self.title
-
-
-
-
-
-#Autor = usuarios registrados en la app
-# class Usuario(models.Model):
-#     usuario = models.
-
     
-#No usen textfield
+class Comentario(models.Model):
+    receta = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comentarios')
+    autor = models.CharField(max_length=200)
+    contenido = models.TextField()
+    fecha_publicacion = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Comentario de {self.autor} en {self.receta.titulo}'
